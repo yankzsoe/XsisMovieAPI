@@ -9,6 +9,8 @@ namespace XsisMovieAPI.Application.Mappers {
                 .ForMember(d => d.Id, s => s.MapFrom(e => e.Id))
                 .ForMember(d => d.Title, s => s.MapFrom(e => e.Title))
                 .ForMember(d => d.Description, s => s.MapFrom(e => e.Description))
+                .ForMember(d => d.Rating, s => s.MapFrom(e => e.Rating))
+                .ForMember(d => d.Image, s => s.MapFrom(e => e.Image))
                 .ForMember(d => d.CreatedDate, s => s.MapFrom(e => e.CreatedDate))
                 .ForMember(d => d.UpdateDate, s => s.MapFrom(e => e.UpdatedDate));
 
@@ -16,6 +18,12 @@ namespace XsisMovieAPI.Application.Mappers {
                 .ForMember(d => d.Id, s => s.Ignore())
                 .ForMember(d => d.CreatedDate, s => s.Ignore())
                 .ForMember(d => d.UpdatedDate, s => s.Ignore());
+
+            CreateMap<CreateUpdateMovie, Movie>()
+                .ForMember(d => d.Title, s => s.MapFrom(e => e.Title))
+                .ForMember(d => d.Description, s => s.MapFrom(e => e.Description))
+                .ForMember(d => d.Rating, s => s.MapFrom(e => e.Rating))
+                .ForMember(d => d.Image, s => s.MapFrom(e => e.Image));
         }
     }
 }
