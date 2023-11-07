@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using MediatR;
 using XsisMovieAPI.Application.Common.Models;
 using XsisMovieAPI.Application.Common.Models.Responses;
 using XsisMovieAPI.Application.Interfaces;
 
 namespace XsisMovieAPI.Application.Features.Movie.Commands.Create {
-    public class MovieCreateCommand : IRequest<Response<MovieViewModel>> {
-        public CreateUpdateMovie Movie { get; set; }
+    public class MovieCreateCommand : IRequest<Response<string>> {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public float Rating { get; set; }
+        public string Image { get; set; }
     }
 
-    public class MovieCreateCommandHandler : IRequestHandler<MovieCreateCommand, Response<MovieViewModel>> {
+    public class MovieCreateCommandHandler : IRequestHandler<MovieCreateCommand, Response<string>> {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -19,11 +21,17 @@ namespace XsisMovieAPI.Application.Features.Movie.Commands.Create {
             _mapper = mapper;
         }
 
-        public async Task<Response<MovieViewModel>> Handle(MovieCreateCommand request, CancellationToken cancellationToken) {
-            var movie = _mapper.Map<MovieViewModel>(request.Movie);
-            var data = await _unitOfWork.Movie.InsertMovieAsync(movie);
-            var result = _mapper.Map<MovieViewModel>(data);
-            return new Response<MovieViewModel>(result, "Created Successfully");
+        public async Task<Response<string>> Handle(MovieCreateCommand request, CancellationToken cancellationToken) {
+            var movie = new Domain.Entities.Movie() {
+                Title = request.Title,
+                Description = request.Description,
+                Rating = request.Rating,
+                Image = request.Image,
+            };
+
+            await _unitOfWork.Movie.AddAsync(movie);
+            await _unitOfWork.CompleteAsync();
+            return new Response<string>("Created Successfully");
         }
     }
 }

@@ -2,6 +2,7 @@
 using XsisMovieAPI.Application.Common.Models;
 using XsisMovieAPI.Application.Common.Models.Enums;
 using XsisMovieAPI.Application.Features.Movie.Queries.GetList;
+using XsisMovieAPI.Application.Interfaces;
 using XsisMovieAPI.Application.Interfaces.Repositories;
 using XsisMovieAPI.Domain.Entities;
 
@@ -47,7 +48,7 @@ namespace XsisMovieAPI.Infrastructure.Persistance.Repositories {
             }
 
             int totalCount = await data.AsNoTracking().CountAsync();
-            
+
             var list = await data
                 .AsNoTracking()
                 .Skip((query.PageNumber - 1) * query.PageSize)
@@ -67,24 +68,6 @@ namespace XsisMovieAPI.Infrastructure.Persistance.Repositories {
                  .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<Movie> GetByIdAsync(int id) {
-            return await AppDbContext.Movies
-                 .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<Movie> InsertMovieAsync(MovieViewModel movie) {
-            var data = new Movie() {
-              Title = movie.Title,
-              Description = movie.Description,
-              Rating = movie.Rating,
-              Image = movie.Image,
-            };
-
-            await AppDbContext.Movies.AddAsync(data);
-            await AppDbContext.SaveChangesAsync();
-            return data;
-        }
-
         public async Task<Movie> UpdateMovieAsync(int id, MovieViewModel movie) {
             var data = new Movie() {
                 Id = id,
@@ -97,6 +80,27 @@ namespace XsisMovieAPI.Infrastructure.Persistance.Repositories {
             AppDbContext.Movies.Update(data);
             await AppDbContext.SaveChangesAsync();
             return data;
+        }
+
+        public new async Task<Movie> GetAsync(int id) {
+            return await AppDbContext.Movies
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task AddAsync(Movie entity) {
+            await AppDbContext.Movies.AddAsync(entity);
+        }
+
+        public async Task AddRangeAsync(IEnumerable<Movie> entities) {
+            await AppDbContext.Movies.AddRangeAsync(entities);
+        }
+
+        public void Remove(Movie entity) {
+            AppDbContext.Movies.Remove(entity);
+        }
+
+        public void RemoveRange(IEnumerable<Movie> entities) {
+            AppDbContext.Movies.RemoveRange(entities);
         }
     }
 }
