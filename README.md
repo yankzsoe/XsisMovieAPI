@@ -2,7 +2,7 @@
 
 ## Gambaran Umum
 
-Project ini dibuat untuk teknikal test di PT. XSIS MITRA UTAMA.
+Movie API dengan Clean Code Architecture.
 
 ## Fitur Utama
 REST API dibangun dengan NET Core 6 dengan menggunakan Postgres serta menerapkan Clean Architecture 
