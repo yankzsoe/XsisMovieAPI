@@ -17,11 +17,8 @@ namespace XsisMovieAPI.Infrastructure.Persistance.Repositories {
         }
 
         public async Task<(int totalCount, List<Movie> movies)> GetListAsNoTrackingAsync(MovieGetListQuery query) {
-            IQueryable<Movie> data = AppDbContext.Movies;
-
-            if (!string.IsNullOrWhiteSpace(query.Keyword)) {
-                data.Where(e => e.Title == query.Keyword);
-            }
+            IQueryable<Movie> data = AppDbContext.Movies
+                .Where(e => e.Title.ToLower().Contains(query.Keyword.ToLower()));
 
             if (query.MovieGetListOrderBy == MovieGetListOrderBy.Id) {
                 if (query.SortBy == SortBy.Asc) {
@@ -50,9 +47,9 @@ namespace XsisMovieAPI.Infrastructure.Persistance.Repositories {
             int totalCount = await data.AsNoTracking().CountAsync();
 
             var list = await data
-                .AsNoTracking()
                 .Skip((query.PageNumber - 1) * query.PageSize)
                 .Take(query.PageSize)
+                .AsNoTracking()
                 .ToListAsync();
 
             return (totalCount, list);
