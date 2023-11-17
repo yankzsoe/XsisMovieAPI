@@ -18,7 +18,8 @@ namespace XsisMovieAPI.Infrastructure.Persistance {
         public virtual DbSet<Movie> Movies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseNpgsql(_Configuration.GetConnectionString("postgresdb"));
+            //optionsBuilder.UseNpgsql(_Configuration.GetConnectionString("postgresdb"));
+            optionsBuilder.UseSqlServer(_Configuration.GetConnectionString("sqlserverdb"));
             base.OnConfiguring(optionsBuilder);
         }
 

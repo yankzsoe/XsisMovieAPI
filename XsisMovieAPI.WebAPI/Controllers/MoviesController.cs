@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using XsisMovieAPI.Application.Common.Models;
 using XsisMovieAPI.Application.Common.Models.Responses;
 using XsisMovieAPI.Application.Features.Movie.Commands.Create;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Newtonsoft.Json.Linq;
 using XsisMovieAPI.Application.Features.Movie.Commands.Delete;
-using XsisMovieAPI.Application.Features.Movie.Commands.Patch;
 using XsisMovieAPI.Application.Features.Movie.Commands.Patch.Add;
 using XsisMovieAPI.Application.Features.Movie.Commands.Patch.Update;
 
